@@ -1,0 +1,43 @@
+{
+    "name": "local-storage-bucket",
+    "version": "1.0.0",
+    "description": "Local storage bucket API for uploading photos, videos, and files",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "prod": "NODE_ENV=production node index.js",
+        "pm2:start": "pm2 start ecosystem.config.js",
+        "pm2:stop": "pm2 stop ecosystem.config.js",
+        "pm2:restart": "pm2 restart ecosystem.config.js",
+        "pm2:delete": "pm2 delete ecosystem.config.js",
+        "pm2:logs": "pm2 logs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "storage",
+        "upload",
+        "api",
+        "files",
+        "nodejs",
+        "sqlite"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.2",
+        "multer": "^1.4.5-lts.1",
+        "sqlite3": "^5.1.6",
+        "mime-types": "^2.1.35",
+        "dotenv": "^16.3.1",
+        "helmet": "^7.1.0",
+        "compression": "^1.7.4",
+        "express-rate-limit": "^7.1.5"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.2"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}

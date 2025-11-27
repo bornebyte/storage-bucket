@@ -1,0 +1,88 @@
+node_modules
+.env
+.env.local
+.env.*.local
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+.report/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for placing compiled output
+dist/
+build/
+out/
+.next/
+.svelte-kit/
+.nuxt/
+.vite/
+
+# Dependency directories
+# node_modules is already there
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Optional Prettier cache
+.prettiercache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Compiled output
+# *.js
+# *.d.ts
+
+# Database
+*.db
+*.sqlite
+
+# Uploads
+uploads/
+backend/uploads/
+
+# Coverage directory
+coverage/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+.history/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test results
+junit.xml

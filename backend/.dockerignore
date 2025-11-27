@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.production
+.env.test
+
+# Data
+storage.db
+uploads/
+
+# Logs
+logs/
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+*.tmp
+temp/
+tmp/
+
+# PM2
+.pm2/
+ecosystem.config.js
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
