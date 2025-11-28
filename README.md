@@ -49,6 +49,8 @@ A modern, feature-rich, and beautiful file storage application built with **Next
 
 ## 📦 Installation
 
+### Quick Setup (Development)
+
 1.  **Clone the repository**:
     ```bash
     git clone <repository-url>
@@ -56,7 +58,6 @@ A modern, feature-rich, and beautiful file storage application built with **Next
     ```
 
 2.  **Install dependencies**:
-    You can install dependencies for both frontend and backend from the root:
     ```bash
     npm install
     cd frontend && npm install
@@ -64,18 +65,40 @@ A modern, feature-rich, and beautiful file storage application built with **Next
     cd ..
     ```
 
+3.  **Configure environment variables**:
+    ```bash
+    # Backend
+    cd backend
+    cp .env.example .env
+    
+    # Frontend
+    cd ../frontend
+    cp .env.example .env
+    cp .env.local.example .env.local
+    # Edit .env.local and add your NextAuth secret
+    ```
+
+4.  **Start the application**:
+    ```bash
+    cd ..
+    npm run dev
+    ```
+
+📖 **For detailed setup instructions**, see [SETUP.md](SETUP.md)
+
 ---
 
 ## 🏃‍♂️ How to Run
 
-### Concurrent Mode (Recommended)
+### Development Mode (Recommended)
 Run both the frontend and backend with a single command from the root directory:
 
 ```bash
 npm run dev
 ```
-- **Frontend**: http://localhost:3000
-- **Backend**: http://localhost:3001
+- **Frontend**: http://localhost:3200
+- **Backend API**: http://localhost:3201
+- **Default Login**: `admin` / `admin`
 
 ### Manual Mode
 Run them separately in different terminal windows:
@@ -83,13 +106,31 @@ Run them separately in different terminal windows:
 **Backend:**
 ```bash
 cd backend
-PORT=3001 npm start
+PORT=3201 npm start
 ```
 
 **Frontend:**
 ```bash
 cd frontend
-npm run dev
+PORT=3200 npm run dev
+```
+
+---
+
+## 🚀 Production Deployment
+
+For production deployment with PM2, systemd, nginx, and SSL configuration:
+
+📖 **See the comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide**
+
+Quick production start:
+```bash
+# Build frontend
+cd frontend && npm run build && cd ..
+
+# Start with PM2
+cd backend && pm2 start ecosystem.config.js --env production
+cd ../frontend && pm2 start ecosystem.config.js --env production
 ```
 
 ---
@@ -126,8 +167,45 @@ storage-bucket/
 │   ├── components/         # Reusable UI components
 │   ├── lib/                # Utilities and API client
 │   └── public/             # Static assets
-└── package.json            # Root configuration
+├── deployment/             # Production deployment configs
+│   ├── nginx.conf          # Nginx reverse proxy
+│   ├── storage-bucket-backend.service
+│   └── storage-bucket-frontend.service
+├── DEPLOYMENT.md           # Production deployment guide
+├── SETUP.md               # Quick setup guide
+└── package.json           # Root configuration
 ```
+
+---
+
+## 📚 Documentation
+
+- **[SETUP.md](SETUP.md)** - Quick setup guide for new users
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Comprehensive production deployment guide
+- **[API Documentation](http://localhost:3201)** - Available when backend is running
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+The application uses environment variables for configuration:
+
+**Backend** (`backend/.env`):
+- `PORT` - Server port (default: 3201)
+- `MAX_FILE_SIZE` - Maximum file upload size
+- `CORS_ORIGINS` - Allowed CORS origins
+- See `backend/.env.example` for all options
+
+**Frontend** (`frontend/.env`):
+- `NEXT_PUBLIC_API_URL` - Backend API URL
+
+**Frontend** (`frontend/.env.local`):
+- `NEXTAUTH_SECRET` - NextAuth encryption secret
+- `NEXTAUTH_URL` - Frontend URL
+
+---
 
 ## 📝 License
 
