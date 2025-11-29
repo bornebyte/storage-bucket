@@ -69,12 +69,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="w-full max-w-7xl mx-auto space-y-6 md:space-y-8">
       <header>
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+          className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
         >
           Dashboard
         </motion.h1>

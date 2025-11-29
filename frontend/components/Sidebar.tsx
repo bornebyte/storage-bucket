@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FolderOpen, PieChart, LogOut, HardDrive } from 'lucide-react';
+import { LayoutDashboard, FolderOpen, PieChart, LogOut, HardDrive, Menu, X } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { clsx } from 'clsx';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 const navItems = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -15,9 +16,10 @@ const navItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    return (
-        <div className="w-64 bg-gray-900 text-white h-screen flex flex-col border-r border-gray-800">
+    const SidebarContent = () => (
+        <>
             <div className="p-6 flex items-center gap-3 border-b border-gray-800">
                 <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
                     <HardDrive className="w-6 h-6 text-white" />
@@ -36,6 +38,7 @@ export default function Sidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
                             className={clsx(
                                 'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden',
                                 isActive
@@ -67,6 +70,47 @@ export default function Sidebar() {
                     <span className="font-medium">Sign Out</span>
                 </button>
             </div>
-        </div>
+        </>
+    );
+
+    return (
+        <>
+            {/* Mobile Menu Button */}
+            <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-xl shadow-lg"
+            >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
+            {/* Desktop Sidebar */}
+            <aside className="hidden md:flex w-64 bg-gray-900 text-white h-screen flex-col border-r border-gray-800">
+                <SidebarContent />
+            </aside>
+
+            {/* Mobile Sidebar */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="md:hidden fixed inset-0 bg-black/50 z-40"
+                        />
+                        <motion.aside
+                            initial={{ x: '-100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            className="md:hidden fixed left-0 top-0 w-64 bg-gray-900 text-white h-screen flex flex-col border-r border-gray-800 z-50"
+                        >
+                            <SidebarContent />
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 }

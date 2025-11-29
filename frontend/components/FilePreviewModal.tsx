@@ -81,23 +81,23 @@ export default function FilePreviewModal({ file, onClose }: FilePreviewModalProp
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
             >
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-                    <div className="flex items-center gap-3 overflow-hidden">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-800 gap-2">
+                    <div className="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
                             {file.originalName}
                         </h3>
-                        <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
+                        <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
                             ({(file.size / 1024 / 1024).toFixed(2)} MB)
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 self-end sm:self-auto">
                         <a
                             href={previewUrl}
                             target="_blank"
@@ -116,7 +116,7 @@ export default function FilePreviewModal({ file, onClose }: FilePreviewModalProp
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-auto p-4 flex items-center justify-center bg-gray-50 dark:bg-black/50">
+                <div className="flex-1 overflow-auto p-2 sm:p-4 flex items-center justify-center bg-gray-50 dark:bg-black/50">
                     {renderContent()}
                 </div>
             </motion.div>

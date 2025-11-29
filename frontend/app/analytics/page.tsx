@@ -39,7 +39,7 @@ export default function AnalyticsPage() {
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+                    className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
                 >
                     Analytics
                 </motion.h1>
@@ -47,7 +47,7 @@ export default function AnalyticsPage() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-gray-500 dark:text-gray-400 mt-2"
+                    className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-2"
                 >
                     Detailed insights about your storage usage
                 </motion.p>

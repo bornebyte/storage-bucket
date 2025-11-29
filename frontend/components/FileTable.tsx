@@ -91,13 +91,13 @@ export default function FileTable({ files, onDelete, onRename, onPreview, onBulk
     return (
         <div className="space-y-4">
             {selectedIds.length > 0 && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl flex items-center justify-between border border-blue-100 dark:border-blue-800">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-blue-100 dark:border-blue-800">
                     <span className="text-blue-600 dark:text-blue-400 font-medium">
-                        {selectedIds.length} files selected
+                        {selectedIds.length} file{selectedIds.length > 1 ? 's' : ''} selected
                     </span>
                     <button
                         onClick={handleBulkDelete}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm font-medium"
+                        className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm font-medium w-full sm:w-auto justify-center"
                     >
                         <Trash2 className="w-4 h-4" />
                         Delete Selected
@@ -105,7 +105,8 @@ export default function FileTable({ files, onDelete, onRename, onPreview, onBulk
                 </div>
             )}
 
-            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-gray-100 dark:border-gray-700">
@@ -209,6 +210,97 @@ export default function FileTable({ files, onDelete, onRename, onPreview, onBulk
                         </AnimatePresence>
                     </tbody>
                 </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                <AnimatePresence>
+                    {files.map((file) => (
+                        <motion.div
+                            key={file.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, x: -100 }}
+                            className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm"
+                        >
+                            {/* File Header with Checkbox */}
+                            <div className="flex items-start gap-3 mb-3">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedIds.includes(file.id)}
+                                    onChange={() => {
+                                        if (selectedIds.includes(file.id)) {
+                                            setSelectedIds(selectedIds.filter((id) => id !== file.id));
+                                        } else {
+                                            setSelectedIds([...selectedIds, file.id]);
+                                        }
+                                    }}
+                                    className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                />
+                                <div className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                    {getFileIcon(file.mimeType)}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate" title={file.originalName}>
+                                        {file.originalName}
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400">
+                                            {file.mimeType.split('/')[1].toUpperCase()}
+                                        </span>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                                            {formatSize(file.size)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* File Info */}
+                            <div className="mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    Uploaded: {new Date(file.uploadDate).toLocaleDateString()}
+                                </p>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="grid grid-cols-4 gap-2">
+                                <button
+                                    onClick={() => onPreview(file)}
+                                    className="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                                >
+                                    <FileText className="w-5 h-5" />
+                                    <span className="text-xs">Preview</span>
+                                </button>
+                                <button
+                                    onClick={() => onRename(file.id, file.originalName)}
+                                    className="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-400 hover:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded-lg transition-colors"
+                                >
+                                    <MoreVertical className="w-5 h-5" />
+                                    <span className="text-xs">Rename</span>
+                                </button>
+                                <button
+                                    onClick={() => handleDownload(file.id, file.originalName)}
+                                    className="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-400 hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors"
+                                >
+                                    <Download className="w-5 h-5" />
+                                    <span className="text-xs">Download</span>
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(file.id)}
+                                    disabled={deletingId === file.id}
+                                    className="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                                >
+                                    {deletingId === file.id ? (
+                                        <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                                    ) : (
+                                        <Trash2 className="w-5 h-5" />
+                                    )}
+                                    <span className="text-xs">Delete</span>
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
             </div>
         </div>
     );

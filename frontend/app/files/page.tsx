@@ -79,12 +79,12 @@ export default function FilesPage() {
 
     return (
         <div className="max-w-7xl mx-auto space-y-8">
-            <header className="flex items-center justify-between">
+            <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <motion.h1
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+                        className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
                     >
                         Files
                     </motion.h1>
@@ -92,14 +92,14 @@ export default function FilesPage() {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-gray-500 dark:text-gray-400 mt-2"
+                        className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-2"
                     >
                         Manage your uploaded files
                     </motion.p>
                 </div>
                 <button
                     onClick={() => setShowUploader(!showUploader)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-colors w-full sm:w-auto justify-center"
                 >
                     {showUploader ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                     {showUploader ? 'Close Uploader' : 'Upload New'}
@@ -134,21 +134,21 @@ export default function FilesPage() {
                     />
 
                     {totalPages > 1 && (
-                        <div className="flex justify-center gap-2 mt-8">
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-2 mt-8">
                             <button
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={page === 1}
-                                className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                             >
                                 Previous
                             </button>
-                            <span className="px-4 py-2 text-gray-600 dark:text-gray-300">
+                            <span className="px-4 py-2 text-gray-600 dark:text-gray-300 text-sm sm:text-base">
                                 Page {page} of {totalPages}
                             </span>
                             <button
                                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                 disabled={page === totalPages}
-                                className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                             >
                                 Next
                             </button>

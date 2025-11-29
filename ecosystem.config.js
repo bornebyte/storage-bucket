@@ -1,0 +1,40 @@
+module.exports = {
+    apps: [
+        {
+            name: 'storage-backend',
+            cwd: './backend',
+            script: 'index.js',
+            instances: 1,
+            exec_mode: 'fork',
+            env: {
+                NODE_ENV: 'production',
+                PORT: 3201,
+            },
+            error_file: './logs/backend-error.log',
+            out_file: './logs/backend-out.log',
+            log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+            autorestart: true,
+            max_restarts: 10,
+            min_uptime: '10s',
+        },
+        {
+            name: 'storage-frontend',
+            cwd: './frontend',
+            script: 'node_modules/next/dist/bin/next',
+            args: 'start -p 3200',
+            instances: 1,
+            exec_mode: 'fork',
+            env: {
+                NODE_ENV: 'production',
+                PORT: 3200,
+                NEXT_PUBLIC_API_URL: '/api',
+            },
+            error_file: './logs/frontend-error.log',
+            out_file: './logs/frontend-out.log',
+            log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+            autorestart: true,
+            max_restarts: 10,
+            min_uptime: '10s',
+        },
+    ],
+};

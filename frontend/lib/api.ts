@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3201';
+// In production with Caddy, API is at /api, in development it's at localhost:3201
+const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+    (process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:3201');
 
 const api = axios.create({
     baseURL: API_URL,

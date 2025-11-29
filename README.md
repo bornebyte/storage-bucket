@@ -24,9 +24,14 @@ A modern, feature-rich, and beautiful file storage application built with **Next
 - **Inline Preview**: View images, videos, audio, and PDFs without downloading.
 
 ### 🎨 Modern UI/UX
-- **Responsive Design**: Fully optimized for desktop and mobile devices.
+- **Fully Responsive Design**: Optimized for all screen sizes from mobile phones to desktops.
+  - Mobile-first approach with touch-friendly interfaces.
+  - Hamburger menu navigation for mobile devices.
+  - Card-based layouts for small screens, table views for desktop.
+  - See [MOBILE_RESPONSIVE_CHANGES.md](./MOBILE_RESPONSIVE_CHANGES.md) for details.
 - **Beautiful Interface**: Built with Tailwind CSS, Framer Motion, and Lucide Icons.
 - **Dark Mode Support**: (Implicit support via Tailwind classes).
+- **Smooth Animations**: Powered by Framer Motion for delightful interactions.
 
 ---
 
@@ -182,7 +187,33 @@ storage-bucket/
 
 - **[SETUP.md](SETUP.md)** - Quick setup guide for new users
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Comprehensive production deployment guide
+- **[MOBILE_RESPONSIVE_CHANGES.md](MOBILE_RESPONSIVE_CHANGES.md)** - Mobile responsiveness details
 - **[API Documentation](http://localhost:3201)** - Available when backend is running
+
+---
+
+## 📱 Mobile Responsiveness Testing
+
+The application is fully responsive and optimized for all device sizes. To test:
+
+```bash
+# Run the responsive test checklist
+./test-responsive.sh
+```
+
+Or manually test using browser DevTools:
+1. Start the app: `npm run dev`
+2. Open http://localhost:3200 in browser
+3. Press `F12` → `Ctrl+Shift+M` (or `Cmd+Shift+M` on Mac)
+4. Test different device presets (iPhone, iPad, etc.)
+
+**Key responsive features:**
+- Mobile hamburger menu navigation
+- Card-based file view on mobile, table view on desktop
+- Touch-friendly buttons and interactions
+- Optimized text sizes and layouts for all screens
+
+See [MOBILE_RESPONSIVE_CHANGES.md](./MOBILE_RESPONSIVE_CHANGES.md) for complete details.
 
 ---
 

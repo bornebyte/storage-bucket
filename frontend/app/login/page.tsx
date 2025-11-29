@@ -55,10 +55,10 @@ export default function LoginPage() {
                         >
                             <Lock className="w-8 h-8 text-white" />
                         </motion.div>
-                        <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                        <h1 className="text-2xl md:text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
                             Welcome Back
                         </h1>
-                        <p className="text-gray-400">Sign in to access your storage bucket</p>
+                        <p className="text-sm md:text-base text-gray-400">Sign in to access your storage bucket</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">

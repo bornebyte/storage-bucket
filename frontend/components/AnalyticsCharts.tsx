@@ -19,8 +19,8 @@ export default function AnalyticsCharts({ stats }: AnalyticsChartsProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">File Distribution</h3>
-                <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                <div className="w-full" style={{ minHeight: '300px', height: '300px' }}>
+                    <ResponsiveContainer width="100%" height="100%" minHeight={300}>
                         <PieChart>
                             <Pie
                                 data={data}
@@ -48,8 +48,8 @@ export default function AnalyticsCharts({ stats }: AnalyticsChartsProps) {
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Files by Type</h3>
-                <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                <div className="w-full" style={{ minHeight: '300px', height: '300px' }}>
+                    <ResponsiveContainer width="100%" height="100%" minHeight={300}>
                         <BarChart data={data}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
                             <XAxis dataKey="name" stroke="#9CA3AF" />
