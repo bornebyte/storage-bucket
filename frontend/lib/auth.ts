@@ -9,12 +9,17 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "admin" },
-                password: { label: "Password", type: "password", placeholder: "admin" },
+                username: { label: "Username", type: "text", placeholder: "Enter username" },
+                password: { label: "Password", type: "password", placeholder: "Enter password" },
             },
             async authorize(credentials) {
-                const adminUsername = process.env.ADMIN_USERNAME || "admin";
-                const adminPassword = process.env.ADMIN_PASSWORD || "admin";
+                const adminUsername = process.env.ADMIN_USERNAME;
+                const adminPassword = process.env.ADMIN_PASSWORD;
+
+                if (!adminUsername || !adminPassword) {
+                    console.error('ADMIN_USERNAME and ADMIN_PASSWORD must be set in environment variables');
+                    return null;
+                }
 
                 if (credentials?.username === adminUsername && credentials?.password === adminPassword) {
                     return { id: "1", name: "Admin User", email: "admin@example.com" }
