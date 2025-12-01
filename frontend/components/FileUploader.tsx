@@ -2,24 +2,21 @@
 
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, X, File as FileIcon, CheckCircle, AlertCircle } from 'lucide-react';
+import { Upload, X, File as FileIcon, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { uploadMultipleFiles } from '@/lib/api';
+import { useUpload } from '@/contexts/UploadContext';
 
 interface FileUploaderProps {
-    onUploadComplete: () => void;
+    onUploadComplete?: () => void;
 }
 
 export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
     const [files, setFiles] = useState<File[]>([]);
-    const [uploading, setUploading] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const { addFiles } = useUpload();
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         setFiles((prev) => [...prev, ...acceptedFiles]);
-        setError(null);
         setSuccess(false);
     }, []);
 
@@ -29,26 +26,23 @@ export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
         setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleUpload = async () => {
+    const handleUpload = () => {
         if (files.length === 0) return;
 
-        setUploading(true);
-        setProgress(0);
-        setError(null);
+        // Add files to the global upload context
+        addFiles(files);
 
-        try {
-            await uploadMultipleFiles(files, (percent) => {
-                setProgress(percent);
-            });
-            setSuccess(true);
-            setFiles([]);
+        // Clear local files and show success
+        setFiles([]);
+        setSuccess(true);
+
+        // Call the callback if provided
+        if (onUploadComplete) {
             onUploadComplete();
-            setTimeout(() => setSuccess(false), 3000);
-        } catch (err: any) {
-            setError(err.response?.data?.error || 'Upload failed');
-        } finally {
-            setUploading(false);
         }
+
+        // Hide success message after 3 seconds
+        setTimeout(() => setSuccess(false), 3000);
     };
 
     return (
@@ -108,7 +102,6 @@ export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
                                 <button
                                     onClick={() => removeFile(index)}
                                     className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
-                                    disabled={uploading}
                                 >
                                     <X className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                                 </button>
@@ -118,44 +111,22 @@ export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
                         <div className="flex items-center gap-4 mt-4">
                             <button
                                 onClick={handleUpload}
-                                disabled={uploading}
-                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2"
                             >
-                                {uploading ? 'Uploading...' : 'Upload Files'}
+                                Add to Upload Queue
                             </button>
                             <button
                                 onClick={() => setFiles([])}
-                                disabled={uploading}
-                                className="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+                                className="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                             >
                                 Clear
                             </button>
                         </div>
-
-                        {uploading && (
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
-                                <div
-                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                    style={{ width: `${progress}%` }}
-                                />
-                            </div>
-                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
 
             <AnimatePresence>
-                {error && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl flex items-center gap-3"
-                    >
-                        <AlertCircle className="w-5 h-5" />
-                        <p>{error}</p>
-                    </motion.div>
-                )}
                 {success && (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -164,7 +135,7 @@ export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
                         className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl flex items-center gap-3"
                     >
                         <CheckCircle className="w-5 h-5" />
-                        <p>Files uploaded successfully!</p>
+                        <p>Files added to upload queue! Check the upload manager at the bottom right.</p>
                     </motion.div>
                 )}
             </AnimatePresence>

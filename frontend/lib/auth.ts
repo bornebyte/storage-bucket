@@ -13,17 +13,30 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password", placeholder: "admin" },
             },
             async authorize(credentials) {
-                if (credentials?.username === "admin" && credentials?.password === "admin") {
+                const adminUsername = process.env.ADMIN_USERNAME || "admin";
+                const adminPassword = process.env.ADMIN_PASSWORD || "admin";
+
+                if (credentials?.username === adminUsername && credentials?.password === adminPassword) {
                     return { id: "1", name: "Admin User", email: "admin@example.com" }
                 }
                 return null
             },
         }),
     ],
+    session: {
+        strategy: "jwt",
+    },
     pages: {
         signIn: '/login',
     },
     callbacks: {
+        async redirect({ url, baseUrl }) {
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) return url
+            return baseUrl
+        },
         async session({ session, token }) {
             return session
         },

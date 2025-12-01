@@ -1,8 +1,9 @@
 'use client';
 
 import { FileData, getPreviewUrl, getDownloadUrl } from '@/lib/api';
-import { X, Download, FileText, ExternalLink } from 'lucide-react';
+import { X, Download, FileText, ExternalLink, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useMediaPlayer } from '@/contexts/MediaPlayerContext';
 
 interface FilePreviewModalProps {
     file: FileData;
@@ -12,6 +13,12 @@ interface FilePreviewModalProps {
 export default function FilePreviewModal({ file, onClose }: FilePreviewModalProps) {
     const previewUrl = getPreviewUrl(file.id);
     const downloadUrl = getDownloadUrl(file.id);
+    const { playMedia } = useMediaPlayer();
+
+    const handlePlayMedia = () => {
+        playMedia(file);
+        onClose();
+    };
 
     const renderContent = () => {
         if (file.mimeType.startsWith('image/')) {
@@ -24,25 +31,26 @@ export default function FilePreviewModal({ file, onClose }: FilePreviewModalProp
             );
         }
 
-        if (file.mimeType.startsWith('video/')) {
+        if (file.mimeType.startsWith('video/') || file.mimeType.startsWith('audio/')) {
+            const isVideo = file.mimeType.startsWith('video/');
             return (
-                <video
-                    src={previewUrl}
-                    controls
-                    className="max-w-full max-h-[80vh] rounded-lg"
-                >
-                    Your browser does not support the video tag.
-                </video>
-            );
-        }
-
-        if (file.mimeType.startsWith('audio/')) {
-            return (
-                <div className="p-8 bg-gray-100 dark:bg-gray-800 rounded-xl flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                        <FileText className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <div className="text-center p-12">
+                    <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Play className="w-10 h-10 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <audio src={previewUrl} controls className="w-full min-w-[300px]" />
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                        {isVideo ? 'Video File' : 'Audio File'}
+                    </h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-6">
+                        Click the button below to play this {isVideo ? 'video' : 'audio'} in the persistent player.
+                    </p>
+                    <button
+                        onClick={handlePlayMedia}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors font-medium"
+                    >
+                        <Play className="w-5 h-5" />
+                        Play {isVideo ? 'Video' : 'Audio'}
+                    </button>
                 </div>
             );
         }
